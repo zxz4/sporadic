@@ -14,9 +14,9 @@
 	  <ProjectReference Include="..\Sporadic.Abp.Identity.Domain\Sporadic.Abp.Identity.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.Ddd.Application" Version="$(AbpPackageVersion)" />
-		<PackageReference Include="Volo.Abp.Authorization" Version="$(AbpPackageVersion)" />
-		<PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="$(AbpPackageVersion)" />
-		<PackageReference Include="Volo.Abp.AutoMapper" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.Ddd.Application" />
+		<PackageReference Include="Volo.Abp.Authorization"/>
+		<PackageReference Include="Volo.Abp.PermissionManagement.Application"/>
+		<PackageReference Include="Volo.Abp.AutoMapper"/>
 	</ItemGroup>
 </Project>

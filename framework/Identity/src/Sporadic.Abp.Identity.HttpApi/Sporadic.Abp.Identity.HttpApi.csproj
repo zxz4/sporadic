@@ -15,6 +15,6 @@
 	  <ProjectReference Include="..\Sporadic.Abp.Identity.Application.Contracts\Sporadic.Abp.Identity.Application.Contracts.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.AspNetCore.Mvc" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.AspNetCore.Mvc"/>
 	</ItemGroup>
 </Project>

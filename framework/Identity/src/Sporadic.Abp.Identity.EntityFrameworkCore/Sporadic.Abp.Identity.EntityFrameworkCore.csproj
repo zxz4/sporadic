@@ -16,12 +16,6 @@
 		<ProjectReference Include="..\..\..\Users\src\Sporadic.Abp.Users.EntityFramework\Sporadic.Abp.Users.EntityFramework.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="$(AbpPackageVersion)" />
-	</ItemGroup>
-	<ItemGroup>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="$(MicrosoftAspNetCorePackageVersion)">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		</PackageReference>
+		<PackageReference Include="Volo.Abp.EntityFrameworkCore"/>
 	</ItemGroup>
 </Project>

@@ -21,10 +21,10 @@
 		<ProjectReference Include="..\..\..\Users\src\Sporadic.Abp.Users.Domain.Shared\Sporadic.Abp.Users.Domain.Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.Validation" Version="$(AbpPackageVersion)" />
-		<PackageReference Include="Volo.Abp.Auditing.Contracts" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.Validation"/>
+		<PackageReference Include="Volo.Abp.Auditing.Contracts" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="$(MicrosoftAspNetCorePackageVersion)" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded"/>
 	</ItemGroup>
 </Project>

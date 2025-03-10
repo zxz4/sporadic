@@ -11,7 +11,7 @@
 		<RootNamespace />
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.Ddd.Domain" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.Ddd.Domain"/>
 	</ItemGroup>
 	<ItemGroup>
 	  <ProjectReference Include="..\Sporadic.Abp.Users.Domain.Shared\Sporadic.Abp.Users.Domain.Shared.csproj" />

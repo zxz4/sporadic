@@ -13,8 +13,8 @@
 	  <ProjectReference Include="..\Sporadic.Abp.Identity.Domain.Shared\Sporadic.Abp.Identity.Domain.Shared.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts" Version="$(AbpPackageVersion)" />
-		<PackageReference Include="Volo.Abp.Ddd.Application.Contracts" Version="$(AbpPackageVersion)" />
-		<PackageReference Include="Volo.Abp.Authorization" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.PermissionManagement.Application.Contracts"/>
+		<PackageReference Include="Volo.Abp.Ddd.Application.Contracts"/>
+		<PackageReference Include="Volo.Abp.Authorization"/>
 	</ItemGroup>
 </Project>
