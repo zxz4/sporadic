@@ -1,0 +1,20 @@
+<Project>
+	<PropertyGroup>
+		<!-- All Abp packages -->
+		<AbpPackageVersion>8.3.4</AbpPackageVersion>
+		
+		<!-- All Microsoft AspNetCore packages -->
+		<MicrosoftAspNetCorePackageVersion>8.0.13</MicrosoftAspNetCorePackageVersion>
+
+
+		<IsTestProject Condition="$(MSBuildProjectFullPath.Contains('test')) and ($(MSBuildProjectName.EndsWith('.Tests')) or $(MSBuildProjectName.EndsWith('.TestBase')))">true</IsTestProject>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<PackageReference Condition="'$(IsTestProject)' == 'true'" Include="coverlet.collector">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+</Project>

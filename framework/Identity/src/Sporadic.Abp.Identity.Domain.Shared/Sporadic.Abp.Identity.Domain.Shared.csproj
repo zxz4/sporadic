@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
+		<AssemblyName>Sporadic.Abp.Identity.Domain.Shared</AssemblyName>
+		<PackageId>Sporadic.Abp.Identity.Domain.Shared</PackageId>
+		<AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<GenerateEmbeddedFilesManifest>true</GenerateEmbeddedFilesManifest>
+		<RootNamespace />
+	</PropertyGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Sporadic\Abp\Identity\Localization\*.json" />
+		<Content Remove="Sporadic\Abp\Identity\Localization\*.json" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Sporadic\Abp\Identity\Localization\zh-Hans.json" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Users\src\Sporadic.Abp.Users.Domain.Shared\Sporadic.Abp.Users.Domain.Shared.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.Validation" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.Auditing.Contracts" Version="$(AbpPackageVersion)" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Embedded" Version="$(MicrosoftAspNetCorePackageVersion)" />
+	</ItemGroup>
+</Project>

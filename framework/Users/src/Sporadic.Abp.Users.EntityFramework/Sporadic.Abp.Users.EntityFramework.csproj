@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<AssemblyName>Sporadic.Abp.Users.EntityFrameworkCore</AssemblyName>
+		<PackageId>Sporadic.Abp.Users.EntityFrameworkCore</PackageId>
+		<AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<RootNamespace />
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.EntityFrameworkCore" Version="$(AbpPackageVersion)" />
+	</ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sporadic.Abp.Users.Domain\Sporadic.Abp.Users.Domain.csproj" />
+  </ItemGroup>
+</Project>

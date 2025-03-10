@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<AssemblyName>Sporadic.Abp.Identity.Application</AssemblyName>
+		<PackageId>Sporadic.Abp.Identity.Application</PackageId>
+		<AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<RootNamespace />
+	</PropertyGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Sporadic.Abp.Identity.Application.Contracts\Sporadic.Abp.Identity.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\Sporadic.Abp.Identity.Domain\Sporadic.Abp.Identity.Domain.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.Ddd.Application" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.Authorization" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.PermissionManagement.Application" Version="$(AbpPackageVersion)" />
+		<PackageReference Include="Volo.Abp.AutoMapper" Version="$(AbpPackageVersion)" />
+	</ItemGroup>
+</Project>

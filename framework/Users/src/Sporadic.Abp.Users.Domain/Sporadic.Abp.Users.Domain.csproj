@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
+		<AssemblyName>Sporadic.Abp.Users.Domain</AssemblyName>
+		<PackageId>Sporadic.Abp.Users.Domain</PackageId>
+		<AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+		<GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+		<GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+		<GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+		<RootNamespace />
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Volo.Abp.Ddd.Domain" Version="$(AbpPackageVersion)" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\Sporadic.Abp.Users.Domain.Shared\Sporadic.Abp.Users.Domain.Shared.csproj" />
+	</ItemGroup>
+</Project>
