@@ -16,9 +16,9 @@
 		<ProjectReference Include="..\..\..\Users\src\Sporadic.Abp.Users.Domain\Sporadic.Abp.Users.Domain.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Volo.Abp.Ddd.Domain"/>
+		<PackageReference Include="Volo.Abp.Ddd.Domain" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Identity.Core"/>
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" />
 	</ItemGroup>
 </Project>

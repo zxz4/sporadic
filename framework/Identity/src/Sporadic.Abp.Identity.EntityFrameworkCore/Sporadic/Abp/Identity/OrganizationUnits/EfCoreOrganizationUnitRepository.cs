@@ -55,7 +55,7 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
             CancellationToken cancellationToken = default)
         {
             return await (await GetDbSetAsync())
-                .Where(x => x.Name.Contains(filter))
+                .WhereIf(!string.IsNullOrWhiteSpace(filter),x => x.Name.Contains(filter))
                 .CountAsync(GetCancellationToken(cancellationToken));
         }
 

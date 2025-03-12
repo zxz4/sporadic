@@ -1,5 +1,4 @@
-﻿using System;
-using Volo.Abp.Validation;
+﻿using Volo.Abp.Validation;
 
 namespace Sporadic.Abp.Identity.OrganizationUnits
 {

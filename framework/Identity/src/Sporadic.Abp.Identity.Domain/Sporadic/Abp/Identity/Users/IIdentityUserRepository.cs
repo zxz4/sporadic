@@ -69,7 +69,7 @@ namespace Sporadic.Abp.Identity.Users
         /// <param name="id"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<List<string>> GetRoleNamesAsync(
+        Task<List<string>> GetNormalizedRoleNamesAsync(
             Guid id,
             CancellationToken cancellationToken = default);
 
@@ -79,7 +79,7 @@ namespace Sporadic.Abp.Identity.Users
         /// <param name="userIds"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<List<IdentityUserIdWithRoleNames>> GetRoleNamesAsync(
+        Task<List<IdentityUserIdWithRoleNames>> GetNormalizedRoleNamesAsync(
             IEnumerable<Guid> userIds,
             CancellationToken cancellationToken = default);
 

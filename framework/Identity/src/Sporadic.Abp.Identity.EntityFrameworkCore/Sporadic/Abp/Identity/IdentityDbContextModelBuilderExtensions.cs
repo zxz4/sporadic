@@ -22,12 +22,14 @@ namespace Sporadic.Abp.Identity
                 b.ConfigureByConvention();
                 b.ConfigureSporadicUser();
 
-              
                 b.Property(u => u.PasswordHash).HasMaxLength(IdentityUserConsts.MaxPasswordHashLength)
                     .HasColumnName(nameof(IdentityUser.PasswordHash));
+
                 b.Property(u => u.SecurityStamp).IsRequired().HasMaxLength(IdentityUserConsts.MaxSecurityStampLength)
                     .HasColumnName(nameof(IdentityUser.SecurityStamp));
 
+                b.Property(u => u.ShouldChangePasswordOnNextLogin).HasDefaultValue(false)
+                    .HasColumnName(nameof(IdentityUser.ShouldChangePasswordOnNextLogin));
 
                 b.Property(u => u.IsExternal).IsRequired().HasDefaultValue(true)
                     .HasColumnName(nameof(IdentityUser.IsExternal));
@@ -37,8 +39,6 @@ namespace Sporadic.Abp.Identity
                 b.HasMany(u => u.OrganizationUnits).WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
 
                 b.HasIndex(u => new {u.PhoneNumber,u.Email,u.UserName });
-
-                b.ApplyObjectExtensionMappings();
             });
 
             builder.Entity<IdentityUserLogin>(b =>
@@ -57,8 +57,6 @@ namespace Sporadic.Abp.Identity
                     .HasMaxLength(IdentityUserLoginConsts.MaxProviderDisplayNameLength);
 
                 b.HasIndex(l => new { l.LoginProvider, l.ProviderKey });
-
-                b.ApplyObjectExtensionMappings();
             });
 
             builder.Entity<IdentityRole>(b =>
@@ -103,7 +101,6 @@ namespace Sporadic.Abp.Identity
                 b.HasOne<IdentityUser>().WithMany(u => u.Roles).HasForeignKey(ur => ur.UserId).IsRequired();
 
                 b.HasIndex(ur => new { ur.RoleId, ur.UserId });
-
             });
 
             builder.Entity<OrganizationUnit>(b =>
@@ -113,7 +110,7 @@ namespace Sporadic.Abp.Identity
                 b.ConfigureByConvention();
 
                 b.Property(ou => ou.Code).IsRequired().HasMaxLength(OrganizationUnitConsts.MaxCodeLength)
-                    .HasColumnName(nameof(OrganizationUnit.Code));
+                .HasColumnName(nameof(OrganizationUnit.Code));
 
                 b.Property(ou => ou.Name).IsRequired().HasMaxLength(OrganizationUnitConsts.MaxNameLength)
                 .HasColumnName(nameof(OrganizationUnit.Name));
@@ -134,8 +131,8 @@ namespace Sporadic.Abp.Identity
 
                 b.HasKey(ou => new { ou.OrganizationUnitId, ou.UserId });
 
-                b.HasOne<OrganizationUnit>().WithMany().HasForeignKey(ou => ou.OrganizationUnitId).IsRequired();
-
+                b.HasOne<OrganizationUnit>().WithMany(ou=>ou.Users).HasForeignKey(ou => ou.OrganizationUnitId).IsRequired();
+                
                 b.HasIndex(ou => new { ou.UserId, ou.OrganizationUnitId });
             });
         }

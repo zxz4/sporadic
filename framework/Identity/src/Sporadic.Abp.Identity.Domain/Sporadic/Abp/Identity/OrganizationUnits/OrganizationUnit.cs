@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Sporadic.Abp.Identity.Users;
+using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities;
 
 namespace Sporadic.Abp.Identity.OrganizationUnits
@@ -33,6 +34,9 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
         /// </summary>
         public decimal Latitude { get;  set; }
 
+        public virtual string Code { get; internal set; }
+
+        public virtual ICollection<IdentityUserOrganizationUnit> Users { get; protected set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrganizationUnit"/> class.
@@ -56,7 +60,6 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
         }
 
 
-        public virtual string Code { get; internal set; }
 
 
 
@@ -175,6 +178,20 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
             }
 
             return splittedCode.Take(splittedCode.Length - 1).JoinAsString(".");
+        }
+
+        public virtual void AddUser(Guid userId)
+        {
+            Check.NotNull(userId, nameof(userId));
+
+            Users.Add(new IdentityUserOrganizationUnit(userId,Id));
+        }
+
+        public virtual void RemoveUser(Guid userId)
+        {
+            Check.NotNull(userId, nameof(userId));
+
+            Users.RemoveAll(r => r.UserId == userId);
         }
     }
 }

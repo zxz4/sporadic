@@ -55,7 +55,7 @@ namespace Sporadic.Abp.Identity.Users
                 var userList = ObjectMapper.Map<List<IdentityUser>, List<IdentityUserDto>>(
                     await UserRepository.GetListAsync(input.Sorting, input.MaxResultCount, input.SkipCount, input.Filter));
 
-                var userIdWithRoleNames = await UserRepository.GetRoleNamesAsync(userList.Select(x => x.Id));
+                var userIdWithRoleNames = await UserRepository.GetNormalizedRoleNamesAsync(userList.Select(x => x.Id));
 
                 var resultList = from u in userList 
                                  join r in userIdWithRoleNames on u.Id equals r.Id into ur

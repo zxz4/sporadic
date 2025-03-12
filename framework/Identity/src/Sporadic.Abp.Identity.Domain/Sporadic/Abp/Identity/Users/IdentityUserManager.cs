@@ -14,7 +14,9 @@ namespace Sporadic.Abp.Identity.Users
 {
     public class IdentityUserManager : UserManager<IdentityUser>, IDomainService
     {
+        protected IIdentityUserRepository IdentityUserRepository { get; }
         public IdentityUserManager(
+            IIdentityUserRepository identityUserRepository,
             IdentityUserStore store,
             IOptions<IdentityOptions> optionsAccessor,
             IPasswordHasher<IdentityUser> passwordHasher,
@@ -34,7 +36,9 @@ namespace Sporadic.Abp.Identity.Users
                   services,
                   logger)
         {
+            IdentityUserRepository = identityUserRepository;
         }
+
 
 
         public virtual async Task<IdentityResult> CreateAsync(IdentityUser user, string password, bool validatePassword)
@@ -67,6 +71,15 @@ namespace Sporadic.Abp.Identity.Users
             return user ?? throw new EntityNotFoundException(typeof(IdentityUser), id);
         }
 
+
+        public virtual async Task<IdentityUser> FindByPhoneNumberAsync(string phoneNumber)
+        {
+            ThrowIfDisposed();
+
+            Check.NotNull(phoneNumber, nameof(phoneNumber));
+
+            return await IdentityUserRepository.FindByPhoneNumberAsync(phoneNumber, CancellationToken);
+        }
 
         public virtual async Task<IdentityResult> SetRolesAsync(
             [NotNull] IdentityUser user, 

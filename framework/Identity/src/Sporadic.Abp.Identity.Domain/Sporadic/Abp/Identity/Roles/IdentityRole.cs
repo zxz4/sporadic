@@ -44,7 +44,6 @@ namespace Sporadic.Abp.Identity.Roles
         public virtual ICollection<IdentityRoleClaim> Claims { get; protected set; }
 
 
-
         protected IdentityRole() { }
 
         public IdentityRole(Guid id, [NotNull] string name)

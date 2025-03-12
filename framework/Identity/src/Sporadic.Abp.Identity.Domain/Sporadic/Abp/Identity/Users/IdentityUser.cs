@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Security.Claims;
 using Volo.Abp;
 using Volo.Abp.Auditing;
 using Volo.Abp.Domain.Entities;
@@ -31,11 +30,10 @@ namespace Sporadic.Abp.Identity.Users
         [DisableAuditing]
         public virtual string PasswordHash { get; protected internal set; }
 
-        public virtual ICollection<IdentityUserLogin> Logins { get; protected set; }
-
-        public virtual ICollection<IdentityUserRole> Roles { get; protected set; }
-
-        public virtual ICollection<IdentityUserOrganizationUnit> OrganizationUnits { get; protected set; }
+        /// <summary>
+        /// 指示用户是否应该在下次登录时更改密码
+        /// </summary>
+        public virtual bool ShouldChangePasswordOnNextLogin { get; protected internal set; }
 
 
         public string SecurityStamp { get; internal set; }
@@ -44,6 +42,13 @@ namespace Sporadic.Abp.Identity.Users
         /// 标记是否是外部用户
         /// </summary>
         public bool IsExternal { get; set; }
+
+
+        public virtual ICollection<IdentityUserLogin> Logins { get; protected set; }
+
+        public virtual ICollection<IdentityUserRole> Roles { get; protected set; }
+
+        public virtual ICollection<IdentityUserOrganizationUnit> OrganizationUnits { get; protected set; }
 
         /// <summary>
         /// 使用手机号，用户名，邮箱创建用户
@@ -131,6 +136,15 @@ namespace Sporadic.Abp.Identity.Users
             Check.NotNull(roleId, nameof(roleId));
 
             return Roles.Any(r => r.RoleId == roleId);
+        }
+
+        /// <summary>
+        /// 设置下次登录时是否需要更改密码
+        /// </summary>
+        /// <param name="shouldChangePasswordOnNextLogin"></param>
+        public virtual void SetShouldChangePasswordOnNextLogin(bool shouldChangePasswordOnNextLogin)
+        {
+            ShouldChangePasswordOnNextLogin = shouldChangePasswordOnNextLogin;
         }
     }
 }

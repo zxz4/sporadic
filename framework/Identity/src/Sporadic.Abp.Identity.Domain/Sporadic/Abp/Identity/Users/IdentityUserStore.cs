@@ -456,7 +456,7 @@ namespace Sporadic.Abp.Identity.Users
             Check.NotNull(user, nameof(user));
 
             return await UserRepository
-                .GetRoleNamesAsync(user.Id, cancellationToken: cancellationToken);
+                .GetNormalizedRoleNamesAsync(user.Id, cancellationToken: cancellationToken);
         }
 
 

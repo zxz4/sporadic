@@ -1,16 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Localization;
+﻿using Microsoft.Extensions.Localization;
+using Sporadic.Abp.Identity;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Text.Formatting;
 using Volo.Abp;
+using Volo.Abp.Text.Formatting;
 
-namespace Sporadic.Abp.Identity
+namespace Microsoft.AspNetCore.Identity
 {
     public static class SporadicIdentityResultExtensions
     {
@@ -103,7 +101,7 @@ namespace Sporadic.Abp.Identity
                 throw new ArgumentException("identityResult.Errors should not be null.");
             }
 
-            return identityResult.Errors.Select(err => LocalizeErrorMessage(err, localizer)).JoinAsString(", ");
+            return identityResult.Errors.Select(err => err.LocalizeErrorMessage(localizer)).JoinAsString(", ");
         }
 
         public static string LocalizeErrorMessage(this IdentityError error, IStringLocalizer localizer)

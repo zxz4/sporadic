@@ -62,7 +62,7 @@ namespace Sporadic.Abp.Identity.Users
                 .ToListAsync(GetCancellationToken(cancellationToken));
         }
 
-        public async Task<List<IdentityUserIdWithRoleNames>> GetRoleNamesAsync(IEnumerable<Guid> userIds, CancellationToken cancellationToken = default)
+        public async Task<List<IdentityUserIdWithRoleNames>> GetNormalizedRoleNamesAsync(IEnumerable<Guid> userIds, CancellationToken cancellationToken = default)
         {
             var dbContext = await GetDbContextAsync();
 
@@ -84,7 +84,7 @@ namespace Sporadic.Abp.Identity.Users
             return userRoles;
         }
 
-        public virtual async Task<List<string>> GetRoleNamesAsync(
+        public virtual async Task<List<string>> GetNormalizedRoleNamesAsync(
             Guid id,
             CancellationToken cancellationToken = default)
         {

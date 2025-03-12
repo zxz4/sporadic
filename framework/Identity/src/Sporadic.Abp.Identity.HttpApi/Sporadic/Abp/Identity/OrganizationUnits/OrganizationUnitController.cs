@@ -83,5 +83,24 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
         {
             return OrganizationUnitAppService.GetUnaddedUsersAsync(organizationUnitId, input);
         }
+
+        /// <summary>
+        /// 添加用户到机构
+        /// </summary>
+        /// <param name="organizationUnitId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        [HttpPost("{organizationUnitId}/user/{userId}")]
+        public Task AddUserToOrganizationUnitAsync(Guid organizationUnitId, Guid userId)
+        {
+            return OrganizationUnitAppService.AddUserToOrganizationUnitAsync(organizationUnitId, userId);
+        }
+
+        [HttpDelete("{organizationUnitId}/user/{userId}")]
+        public Task RemoveUserFromOrganizationUnitAsync(Guid organizationUnitId, Guid userId)
+        {
+            return OrganizationUnitAppService.RemoveUserFromOrganizationUnitAsync(organizationUnitId, userId);
+        }
     }
 }

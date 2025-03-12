@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Logging;
-using Sporadic.Abp.Identity.Roles;
+using Sporadic.Abp.Identity.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Caching;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Uow;
@@ -32,9 +33,9 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
         public virtual async Task CreateAsync(OrganizationUnit organizationUnit)
         {
             organizationUnit.Code = await GetNextChildCodeAsync(organizationUnit.ParentId);
-          
+
             await ValidateOrganizationUnitAsync(organizationUnit);
-           
+
             await OrganizationUnitRepository.InsertAsync(organizationUnit);
         }
 
@@ -45,7 +46,7 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
             await RemoveDynamicClaimCacheAsync(organizationUnit);
         }
 
-        public virtual async Task SetNameAsync(OrganizationUnit organizationUnit , string name)
+        public virtual async Task SetNameAsync(OrganizationUnit organizationUnit, string name)
         {
             organizationUnit.Name = name;
 
@@ -69,6 +70,45 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
             await RemoveDynamicClaimCacheAsync(organizationUnit);
             await OrganizationUnitRepository.RemoveAllMembersAsync(organizationUnit);
             await OrganizationUnitRepository.DeleteAsync(id);
+        }
+
+        /// <summary>
+        /// 讲用户添加到机构
+        /// </summary>
+        /// <param name="organizationUnit"></param>
+        /// <param name="identityUser"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public virtual async Task AddUserToOrganizationUnitAsync(OrganizationUnit organizationUnit, IdentityUser identityUser, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            Check.NotNull(organizationUnit, nameof(organizationUnit));
+            Check.NotNull(identityUser, nameof(identityUser));
+
+            await OrganizationUnitRepository.EnsureCollectionLoadedAsync(organizationUnit, ou =>ou.Users, cancellationToken: cancellationToken);
+
+            if (organizationUnit.Users.Any(ou=>ou.UserId == identityUser.Id))
+            {
+                return;
+            }
+
+            organizationUnit.AddUser(identityUser.Id);
+            await UpdateAsync(organizationUnit);
+        }
+
+        public virtual async Task RemoveUserFromOrganizationUnitAsync(OrganizationUnit organizationUnit, IdentityUser identityUser, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            Check.NotNull(organizationUnit, nameof(organizationUnit));
+            Check.NotNull(identityUser, nameof(identityUser));
+
+            await OrganizationUnitRepository.EnsureCollectionLoadedAsync(organizationUnit, ou => ou.Users, cancellationToken: cancellationToken);
+
+            if (organizationUnit.Users.Any(ou => ou.UserId == identityUser.Id))
+            {
+                organizationUnit.RemoveUser(identityUser.Id);
+                await UpdateAsync(organizationUnit);
+            }
         }
 
         public virtual async Task<string> GetNextChildCodeAsync(Guid? parentId)

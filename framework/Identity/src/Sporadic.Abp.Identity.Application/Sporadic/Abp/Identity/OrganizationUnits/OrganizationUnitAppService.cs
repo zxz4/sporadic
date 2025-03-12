@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Sporadic.Abp.Identity.Users;
+using Sporadic.Abp.Users;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -12,14 +13,16 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
     public class OrganizationUnitAppService : IdentityAppServiceBase, IOrganizationUnitAppService
     {
         public OrganizationUnitAppService(
+            IIdentityUserRepository userRepository,
             IOrganizationUnitRepository organizationUnitRepository,
             OrganizationUnitManager organizationUnitManager)
         {
+            UserRepository = userRepository;
             OrganizationUnitRepository = organizationUnitRepository;
             OrganizationUnitManager = organizationUnitManager;
         }
 
-
+        protected IIdentityUserRepository UserRepository { get; }
         protected IOrganizationUnitRepository OrganizationUnitRepository { get; }
 
         protected OrganizationUnitManager OrganizationUnitManager { get; }
@@ -180,6 +183,20 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
             await OrganizationUnitManager.UpdateAsync(organizationUnit);
 
             return ObjectMapper.Map<OrganizationUnit, OrganizationUnitDto>(organizationUnit);
+        }
+
+        public async Task AddUserToOrganizationUnitAsync(Guid organizationUnitId, Guid userId)
+        {
+            var organizationUnit = await OrganizationUnitRepository.GetAsync(organizationUnitId);
+            var identityUser = await UserRepository.GetAsync(userId);
+            await OrganizationUnitManager.AddUserToOrganizationUnitAsync(organizationUnit, identityUser);
+        }
+
+        public async Task RemoveUserFromOrganizationUnitAsync(Guid organizationUnitId, Guid userId)
+        {
+            var organizationUnit = await OrganizationUnitRepository.GetAsync(organizationUnitId);
+            var identityUser = await UserRepository.GetAsync(userId);
+            await OrganizationUnitManager.RemoveUserFromOrganizationUnitAsync(organizationUnit, identityUser);
         }
     }
 }

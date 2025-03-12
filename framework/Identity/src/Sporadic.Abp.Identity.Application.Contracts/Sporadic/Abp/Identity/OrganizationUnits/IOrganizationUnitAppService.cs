@@ -57,6 +57,23 @@ namespace Sporadic.Abp.Identity.OrganizationUnits
 
 
         /// <summary>
+        /// 添加用户到机构
+        /// </summary>
+        /// <param name="organizationUnitId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task AddUserToOrganizationUnitAsync(Guid organizationUnitId,Guid userId);
+
+
+        /// <summary>
+        /// 从机构移除用户
+        /// </summary>
+        /// <param name="organizationUnitId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        Task RemoveUserFromOrganizationUnitAsync(Guid organizationUnitId, Guid userId);
+
+        /// <summary>
         /// 获取未添加的成员
         /// </summary>
         /// <param name="organizationUnitId"></param>

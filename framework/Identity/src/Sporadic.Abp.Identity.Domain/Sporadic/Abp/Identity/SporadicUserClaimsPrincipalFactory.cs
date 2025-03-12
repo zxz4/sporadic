@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
+using Sporadic.Abp.Identity.Roles;
+using Sporadic.Abp.Identity.Users;
+using System;
 using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Uow;
-using Sporadic.Abp.Identity.Users;
-using Sporadic.Abp.Identity.Roles;
 
 namespace Sporadic.Abp.Identity
 {
