@@ -97,7 +97,7 @@ namespace Sporadic.Abp.Identity.Users
 
             Check.NotNull(phoneNumber, nameof(phoneNumber));
 
-            return await IdentityUserRepository.FindByPhoneNumberAsync(phoneNumber, CancellationToken);
+            return await IdentityUserRepository.FindByPhoneNumberAsync(phoneNumber, cancellationToken:CancellationToken);
         }
 
         public virtual async Task<IdentityResult> SetRolesAsync(

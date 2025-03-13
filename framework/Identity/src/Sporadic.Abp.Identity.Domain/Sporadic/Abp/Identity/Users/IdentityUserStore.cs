@@ -134,7 +134,7 @@ namespace Sporadic.Abp.Identity.Users
 
             Check.NotNull(userName, nameof(userName));
 
-            return UserRepository.FindByUserNameAsync(userName, includeDetails: false, cancellationToken: cancellationToken);
+            return UserRepository.FindByUserNameAsync(userName, cancellationToken: cancellationToken);
         }
 
         public Task<string> GetEmailAsync(IdentityUser user, CancellationToken cancellationToken)

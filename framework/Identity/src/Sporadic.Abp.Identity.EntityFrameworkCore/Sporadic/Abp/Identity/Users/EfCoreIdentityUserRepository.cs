@@ -11,12 +11,8 @@ using Volo.Abp.EntityFrameworkCore;
 
 namespace Sporadic.Abp.Identity.Users
 {
-    public class EfCoreIdentityUserRepository : EfCoreSporadicUserRepositoryBase<IIdentityDbContext, IdentityUser>, IIdentityUserRepository
+    public class EfCoreIdentityUserRepository(IDbContextProvider<IIdentityDbContext> dbContextProvider) : EfCoreSporadicUserRepositoryBase<IIdentityDbContext, IdentityUser>(dbContextProvider), IIdentityUserRepository
     {
-        public EfCoreIdentityUserRepository(IDbContextProvider<IIdentityDbContext> dbContextProvider) : base(dbContextProvider)
-        {
-        }
-
         public virtual async Task<IdentityUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
         {
             return await(await GetDbSetAsync())

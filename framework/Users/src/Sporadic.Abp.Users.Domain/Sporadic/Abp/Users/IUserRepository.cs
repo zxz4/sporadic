@@ -13,25 +13,26 @@ namespace Sporadic.Abp.Users
         /// 通过email查找用户
         /// </summary>
         /// <param name="email"></param>
+        /// <param name="confirmed"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<TUser> FindByEmailAsync(string email, CancellationToken cancellationToken = default);
+        Task<TUser> FindByEmailAsync(string email, bool confirmed = false , CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 通过手机号查找用户
         /// </summary>
         /// <param name="phoneNumber"></param>
+        /// <param name="confirmed"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<TUser> FindByPhoneNumberAsync(string phoneNumber, CancellationToken cancellationToken = default);
+        Task<TUser> FindByPhoneNumberAsync(string phoneNumber, bool confirmed = false, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// 通过用户名查找用户
         /// </summary>
         /// <param name="userName"></param>
-        /// <param name="includeDetails"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<TUser> FindByUserNameAsync(string userName, bool includeDetails, CancellationToken cancellationToken);
+        Task<TUser> FindByUserNameAsync(string userName, CancellationToken cancellationToken);
     }
 }
