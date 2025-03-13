@@ -107,7 +107,16 @@ namespace Sporadic.Abp.Identity.Users
         /// <returns></returns>
         public virtual async Task<bool> VertifyPhoneSignInToken(IdentityUser user,string token)
         {
-            return await VerifyUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, SignInWithPhoneTokenPurpose, token);
+            var result = await VerifyUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, SignInWithPhoneTokenPurpose, token);
+
+            if (result && !user.PhoneNumberConfirmed)
+            {
+                await ((IdentityUserStore)Store).SetPhoneNumberConfirmedAsync(user, true, CancellationToken).ConfigureAwait(false);
+
+                await base.UpdateAsync(user);
+            }
+
+            return result; 
         }
 
 
