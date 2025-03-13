@@ -33,6 +33,6 @@ namespace Sporadic.Abp.Users
         /// <param name="userName"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        Task<TUser> FindByUserNameAsync(string userName, CancellationToken cancellationToken);
+        Task<TUser> FindByUserNameAsync(string userName, CancellationToken cancellationToken = default);
     }
 }

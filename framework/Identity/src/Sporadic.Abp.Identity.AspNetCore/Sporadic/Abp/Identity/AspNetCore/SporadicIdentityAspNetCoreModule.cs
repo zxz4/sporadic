@@ -14,7 +14,7 @@ public class SporadicIdentityAspNetCoreModule : AbpModule
         {
             builder
                 .AddDefaultTokenProviders()
-                .AddSignInManager<SporadicSignInManager>()
+                .AddSignInManager<SporadicIdentitySignInManager>()
                 .AddUserValidator<IdentityUserValidator>();
         });
     }

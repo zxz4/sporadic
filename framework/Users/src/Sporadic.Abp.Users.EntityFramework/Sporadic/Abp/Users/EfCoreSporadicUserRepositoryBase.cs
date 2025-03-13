@@ -20,7 +20,7 @@ namespace Sporadic.Abp.Users
                 GetCancellationToken(cancellationToken));
         }
 
-        public async Task<TUser> FindByUserNameAsync(string userName, CancellationToken cancellationToken)
+        public async Task<TUser> FindByUserNameAsync(string userName, CancellationToken cancellationToken = default)
         {
             return await (await GetDbSetAsync())
                 .FirstOrDefaultAsync(

@@ -101,9 +101,9 @@ namespace Sporadic.Abp.Identity.Users
         /// <param name="userName"></param>
         public IdentityUser(
             Guid id,
-            [CanBeNull] string phoneNumber,
-            [CanBeNull] string email,
-            [CanBeNull] string userName)
+            [CanBeNull] string phoneNumber = null,
+            [CanBeNull] string email = null,
+            [CanBeNull] string userName = null)
             : base(id)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber) && 
