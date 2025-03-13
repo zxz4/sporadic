@@ -34,6 +34,8 @@ namespace Sporadic.Abp.Identity.Users
     {
         public const string ConfirmPhoneNumberTokenPurpose = "PhoneNumberConfirmation";
 
+        public const string SignInWithPhoneTokenPurpose = "PhoneCodeSignIn";
+
         protected IIdentityUserRepository IdentityUserRepository { get; } = identityUserRepository;
 
         public virtual async Task<IdentityResult> CreateAsync(IdentityUser user, string password, bool validatePassword)
@@ -47,6 +49,13 @@ namespace Sporadic.Abp.Identity.Users
             return await CreateAsync(user);
         }
 
+
+        /// <summary>
+        /// 确认手机号码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public virtual async Task<IdentityResult> ConfirmPhoneNumberAsync(IdentityUser user, string token)
         {
             ThrowIfDisposed();
@@ -62,6 +71,11 @@ namespace Sporadic.Abp.Identity.Users
             return await base.UpdateAsync(user);
         }
 
+        /// <summary>
+        /// 生成确认手机短信验证码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public virtual async Task<string> GeneratePhoneNumberConfirmationTokenAsync(IdentityUser user)
         {
             ThrowIfDisposed();
@@ -70,6 +84,32 @@ namespace Sporadic.Abp.Identity.Users
 
             return await GenerateUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, ConfirmPhoneNumberTokenPurpose);
         }
+
+        /// <summary>
+        /// 生成手机登录验证码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public virtual async Task<string> GeneratePhoneSignInTokenAsync(IdentityUser user)
+        {
+            ThrowIfDisposed();
+
+            Check.NotNull(user, nameof(user));
+
+            return await GenerateUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, SignInWithPhoneTokenPurpose);
+        }
+
+        /// <summary>
+        /// 验证手机登录验证码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public virtual async Task<bool> VertifyPhoneSignInToken(IdentityUser user,string token)
+        {
+            return await VerifyUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, SignInWithPhoneTokenPurpose, token);
+        }
+
 
         public async override Task<IdentityResult> DeleteAsync(IdentityUser user)
         {
