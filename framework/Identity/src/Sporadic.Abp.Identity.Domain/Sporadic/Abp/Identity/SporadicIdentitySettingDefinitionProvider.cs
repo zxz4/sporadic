@@ -53,20 +53,6 @@ namespace Sporadic.Abp.Identity
                     true),
 
                 new SettingDefinition(
-                    IdentitySettingNames.Password.ForceUsersToPeriodicallyChangePassword,
-                    false.ToString(),
-                    L("DisplayName:Sporadic.Identity.Password.ForceUsersToPeriodicallyChangePassword"),
-                    L("Description:Sporadic.Identity.Password.ForceUsersToPeriodicallyChangePassword"),
-                    true),
-
-                new SettingDefinition(
-                    IdentitySettingNames.Password.PasswordChangePeriodDays,
-                    0.ToString(),
-                    L("DisplayName:Sporadic.Identity.Password.PasswordChangePeriodDays"),
-                    L("Description:Sporadic.Identity.Password.PasswordChangePeriodDays"),
-                    true),
-
-                new SettingDefinition(
                     IdentitySettingNames.Lockout.AllowedForNewUsers,
                     true.ToString(),
                     L("DisplayName:Sporadic.Identity.Lockout.AllowedForNewUsers"),
@@ -101,7 +87,7 @@ namespace Sporadic.Abp.Identity
                     true),
                 new SettingDefinition(
                     IdentitySettingNames.SignIn.RequireConfirmedPhoneNumber,
-                    false.ToString(),
+                    true.ToString(),
                     L("DisplayName:Sporadic.Identity.SignIn.RequireConfirmedPhoneNumber"),
                     L("Description:Sporadic.Identity.SignIn.RequireConfirmedPhoneNumber"),
                     true),

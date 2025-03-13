@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sporadic.Abp.Identity.Entit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sporadic.Abp.Identity.HttpApi.Host", "src\Sporadic.Abp.Identity.HttpApi.Host\Sporadic.Abp.Identity.HttpApi.Host.csproj", "{59E6EEE7-34C2-47E3-883D-F544A98DB52C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sporadic.Abp.Identity.AspNetCore", "src\Sporadic.Abp.Identity.AspNetCore\Sporadic.Abp.Identity.AspNetCore.csproj", "{E3BDB838-DAB0-41F5-BC7E-30D686645CCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +55,10 @@ Global
 		{59E6EEE7-34C2-47E3-883D-F544A98DB52C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59E6EEE7-34C2-47E3-883D-F544A98DB52C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59E6EEE7-34C2-47E3-883D-F544A98DB52C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3BDB838-DAB0-41F5-BC7E-30D686645CCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3BDB838-DAB0-41F5-BC7E-30D686645CCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3BDB838-DAB0-41F5-BC7E-30D686645CCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3BDB838-DAB0-41F5-BC7E-30D686645CCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -65,6 +71,7 @@ Global
 		{BC1DE205-17F2-4824-BDA7-6881DFEDF373} = {80EDBFE2-7FE1-491B-8FED-CDBB05DD3F89}
 		{77C05FC1-53E4-41B0-9ABC-C3764988862F} = {80EDBFE2-7FE1-491B-8FED-CDBB05DD3F89}
 		{59E6EEE7-34C2-47E3-883D-F544A98DB52C} = {80EDBFE2-7FE1-491B-8FED-CDBB05DD3F89}
+		{E3BDB838-DAB0-41F5-BC7E-30D686645CCB} = {80EDBFE2-7FE1-491B-8FED-CDBB05DD3F89}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BC2F8751-DA1B-4FB1-A841-FAD69324C3F8}

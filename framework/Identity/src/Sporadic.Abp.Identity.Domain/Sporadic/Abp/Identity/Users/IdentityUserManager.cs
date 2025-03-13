@@ -12,34 +12,29 @@ using Volo.Abp.Domain.Services;
 
 namespace Sporadic.Abp.Identity.Users
 {
-    public class IdentityUserManager : UserManager<IdentityUser>, IDomainService
+    public class IdentityUserManager(
+        IIdentityUserRepository identityUserRepository,
+        IdentityUserStore store,
+        IOptions<IdentityOptions> optionsAccessor,
+        IPasswordHasher<IdentityUser> passwordHasher,
+        IEnumerable<IUserValidator<IdentityUser>> userValidators,
+        IEnumerable<IPasswordValidator<IdentityUser>> passwordValidators,
+        ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors,
+        IServiceProvider services,
+        ILogger<UserManager<IdentityUser>> logger) : UserManager<IdentityUser>(
+              store,
+              optionsAccessor,
+              passwordHasher,
+              userValidators,
+              passwordValidators,
+              keyNormalizer,
+              errors,
+              services,
+              logger), IDomainService
     {
-        protected IIdentityUserRepository IdentityUserRepository { get; }
-        public IdentityUserManager(
-            IIdentityUserRepository identityUserRepository,
-            IdentityUserStore store,
-            IOptions<IdentityOptions> optionsAccessor,
-            IPasswordHasher<IdentityUser> passwordHasher,
-            IEnumerable<IUserValidator<IdentityUser>> userValidators,
-            IEnumerable<IPasswordValidator<IdentityUser>> passwordValidators,
-            ILookupNormalizer keyNormalizer, IdentityErrorDescriber errors,
-            IServiceProvider services, 
-            ILogger<UserManager<IdentityUser>> logger)
-            : base(
-                  store,
-                  optionsAccessor,
-                  passwordHasher,
-                  userValidators,
-                  passwordValidators,
-                  keyNormalizer,
-                  errors,
-                  services,
-                  logger)
-        {
-            IdentityUserRepository = identityUserRepository;
-        }
+        public const string ConfirmPhoneNumberTokenPurpose = "PhoneNumberConfirmation";
 
-
+        protected IIdentityUserRepository IdentityUserRepository { get; } = identityUserRepository;
 
         public virtual async Task<IdentityResult> CreateAsync(IdentityUser user, string password, bool validatePassword)
         {
@@ -50,6 +45,30 @@ namespace Sporadic.Abp.Identity.Users
             }
 
             return await CreateAsync(user);
+        }
+
+        public virtual async Task<IdentityResult> ConfirmPhoneNumberAsync(IdentityUser user, string token)
+        {
+            ThrowIfDisposed();
+
+            Check.NotNull(user, nameof(user));
+
+            if (!await VerifyUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, ConfirmPhoneNumberTokenPurpose, token).ConfigureAwait(false))
+            {
+                return IdentityResult.Failed(ErrorDescriber.InvalidToken());
+            }
+            await ((IdentityUserStore)Store).SetPhoneNumberConfirmedAsync(user, true, CancellationToken).ConfigureAwait(false);
+          
+            return await base.UpdateAsync(user);
+        }
+
+        public virtual async Task<string> GeneratePhoneNumberConfirmationTokenAsync(IdentityUser user)
+        {
+            ThrowIfDisposed();
+
+            Check.NotNull(user, nameof(user));
+
+            return await GenerateUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, ConfirmPhoneNumberTokenPurpose);
         }
 
         public async override Task<IdentityResult> DeleteAsync(IdentityUser user)
