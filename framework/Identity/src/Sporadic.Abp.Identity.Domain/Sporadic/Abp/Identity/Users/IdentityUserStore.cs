@@ -26,8 +26,10 @@ namespace Sporadic.Abp.Identity.Users
         IUserSecurityStampStore<IdentityUser>,
         IUserEmailStore<IdentityUser>,
         IUserPhoneNumberStore<IdentityUser>,
+        IUserLockoutStore<IdentityUser>,
         ITransientDependency
     {
+
         public IdentityUserStore(
             IIdentityUserRepository userRepository,
             IIdentityRoleRepository identityRoleRepository,
@@ -36,6 +38,7 @@ namespace Sporadic.Abp.Identity.Users
             ILookupNormalizer lookupNormalizer)
         {
             UserRepository = userRepository;
+
             RoleRepository = identityRoleRepository;
             GuidGenerator = guidGenerator;
             Logger = logger;
@@ -43,7 +46,9 @@ namespace Sporadic.Abp.Identity.Users
         }
 
         protected IIdentityUserRepository UserRepository { get; }
+
         protected IIdentityRoleRepository RoleRepository { get; }
+
         protected IGuidGenerator GuidGenerator { get; }
         protected ILogger<IdentityUserStore> Logger { get; }
         protected ILookupNormalizer LookupNormalizer { get; }
@@ -388,10 +393,6 @@ namespace Sporadic.Abp.Identity.Users
             return IdentityResult.Success;
         }
 
-        public virtual void Dispose()
-        {
-
-        }
         /// <summary>
         /// Adds the given <paramref name="normalizedRoleName"/> to the specified <paramref name="user"/>.
         /// </summary>
@@ -504,6 +505,82 @@ namespace Sporadic.Abp.Identity.Users
             }
 
             return await UserRepository.GetListByNormalizedRoleNameAsync(normalizedRoleName, cancellationToken: cancellationToken);
+        }
+
+        public Task<DateTimeOffset?> GetLockoutEndDateAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            return Task.FromResult(user.LockoutEnd);
+        }
+
+        public Task SetLockoutEndDateAsync(IdentityUser user, DateTimeOffset? lockoutEnd, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            user.LockoutEnd = lockoutEnd;
+
+            return Task.CompletedTask;
+        }
+
+        public Task<int> IncrementAccessFailedCountAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            user.AccessFailedCount++;
+
+            return Task.FromResult(user.AccessFailedCount);
+        }
+
+        public Task ResetAccessFailedCountAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            user.AccessFailedCount = 0;
+
+            return Task.CompletedTask;
+        }
+
+        public Task<int> GetAccessFailedCountAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            return Task.FromResult(user.AccessFailedCount);
+        }
+
+        public Task<bool> GetLockoutEnabledAsync(IdentityUser user, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            return Task.FromResult(user.LockoutEnabled);
+        }
+
+        public Task SetLockoutEnabledAsync(IdentityUser user, bool enabled, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            Check.NotNull(user, nameof(user));
+
+            user.LockoutEnabled = enabled;
+
+            return Task.CompletedTask;
+        }
+
+        public virtual void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

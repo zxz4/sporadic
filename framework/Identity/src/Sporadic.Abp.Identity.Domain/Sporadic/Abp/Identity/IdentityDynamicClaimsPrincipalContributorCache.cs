@@ -14,34 +14,23 @@ using Volo.Abp.Security.Claims;
 
 namespace Sporadic.Abp.Identity
 {
-    public class IdentityDynamicClaimsPrincipalContributorCache : ITransientDependency
+    public class IdentityDynamicClaimsPrincipalContributorCache(
+        IDistributedCache<AbpDynamicClaimCacheItem> dynamicClaimCache,
+        IdentityUserManager userManager,
+        IUserClaimsPrincipalFactory<IdentityUser> userClaimsPrincipalFactory,
+        IOptions<AbpClaimsPrincipalFactoryOptions> abpClaimsPrincipalFactoryOptions,
+        IOptions<IdentityDynamicClaimsPrincipalContributorCacheOptions> cacheOptions) : ITransientDependency
     {
-        public ILogger<IdentityDynamicClaimsPrincipalContributorCache> Logger { get; set; }
-        protected IDistributedCache<AbpDynamicClaimCacheItem> DynamicClaimCache { get; }
-        protected IdentityUserManager UserManager { get; }
-        protected IUserClaimsPrincipalFactory<IdentityUser> UserClaimsPrincipalFactory { get; }
-        protected IOptions<AbpClaimsPrincipalFactoryOptions> AbpClaimsPrincipalFactoryOptions { get; }
-        protected IOptions<IdentityDynamicClaimsPrincipalContributorCacheOptions> CacheOptions { get; }
-
-        public IdentityDynamicClaimsPrincipalContributorCache(
-            IDistributedCache<AbpDynamicClaimCacheItem> dynamicClaimCache,
-            IdentityUserManager userManager,
-            IUserClaimsPrincipalFactory<IdentityUser> userClaimsPrincipalFactory,
-            IOptions<AbpClaimsPrincipalFactoryOptions> abpClaimsPrincipalFactoryOptions,
-            IOptions<IdentityDynamicClaimsPrincipalContributorCacheOptions> cacheOptions)
-        {
-            DynamicClaimCache = dynamicClaimCache;
-            UserManager = userManager;
-            UserClaimsPrincipalFactory = userClaimsPrincipalFactory;
-            AbpClaimsPrincipalFactoryOptions = abpClaimsPrincipalFactoryOptions;
-            CacheOptions = cacheOptions;
-
-            Logger = NullLogger<IdentityDynamicClaimsPrincipalContributorCache>.Instance;
-        }
+        public ILogger<IdentityDynamicClaimsPrincipalContributorCache> Logger { get; set; } = NullLogger<IdentityDynamicClaimsPrincipalContributorCache>.Instance;
+        protected IDistributedCache<AbpDynamicClaimCacheItem> DynamicClaimCache { get; } = dynamicClaimCache;
+        protected IdentityUserManager UserManager { get; } = userManager;
+        protected IUserClaimsPrincipalFactory<IdentityUser> UserClaimsPrincipalFactory { get; } = userClaimsPrincipalFactory;
+        protected IOptions<AbpClaimsPrincipalFactoryOptions> AbpClaimsPrincipalFactoryOptions { get; } = abpClaimsPrincipalFactoryOptions;
+        protected IOptions<IdentityDynamicClaimsPrincipalContributorCacheOptions> CacheOptions { get; } = cacheOptions;
 
         public virtual async Task<AbpDynamicClaimCacheItem> GetAsync(Guid userId, Guid? tenantId = null)
         {
-            Logger.LogDebug($"Get dynamic claims cache for user: {userId}");
+            Logger.LogDebug("从缓存读取用户claims: {userId}",userId);
 
             if (AbpClaimsPrincipalFactoryOptions.Value.DynamicClaims.IsNullOrEmpty())
             {
@@ -56,7 +45,7 @@ namespace Sporadic.Abp.Identity
 
             return await DynamicClaimCache.GetOrAddAsync(AbpDynamicClaimCacheItem.CalculateCacheKey(userId, tenantId), async () =>
             {
-                Logger.LogDebug($"Filling dynamic claims cache for user: {userId}");
+                Logger.LogDebug("设置用户claims缓存: {userId}",userId);
 
                 var user = await UserManager.GetByIdAsync(userId);
                 var principal = await UserClaimsPrincipalFactory.CreateAsync(user);
@@ -65,7 +54,7 @@ namespace Sporadic.Abp.Identity
                 foreach (var claimType in AbpClaimsPrincipalFactoryOptions.Value.DynamicClaims)
                 {
                     var claims = principal.Claims.Where(x => x.Type == claimType).ToList();
-                    if (claims.Any())
+                    if (claims.Count != 0)
                     {
                         dynamicClaims.Claims.AddRange(claims.Select(claim => new AbpDynamicClaim(claimType, claim.Value)));
                     }
@@ -84,7 +73,7 @@ namespace Sporadic.Abp.Identity
 
         public virtual async Task ClearAsync(Guid userId, Guid? tenantId = null)
         {
-            Logger.LogDebug($"Remove dynamic claims cache for user: {userId}");
+            Logger.LogDebug("移除用户claims缓存: {userId}",userId);
             await DynamicClaimCache.RemoveAsync(AbpDynamicClaimCacheItem.CalculateCacheKey(userId, tenantId));
         }
     }

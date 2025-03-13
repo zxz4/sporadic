@@ -19,18 +19,17 @@ namespace Sporadic.Abp.Identity
         {
             PreConfigure<AbpClaimsPrincipalFactoryOptions>(options =>
             {
+                options.RemoteRefreshUrl = "/api/account/dynamic-claims/refresh";
                 options.IsRemoteRefreshEnabled = false;
             });
         }
         public override void ConfigureServices(ServiceConfigurationContext context)
         {
-            var identityBuilder = context.Services.AddAbpIdentity(options =>
-            {
-                options.User.RequireUniqueEmail = false;
-            });
+            var identityBuilder = context.Services.AddSporadicIdentity();
 
             context.Services.AddObjectAccessor(identityBuilder);
             context.Services.ExecutePreConfiguredActions(identityBuilder);
+
             Configure<IdentityOptions>(options =>
             {
                 options.ClaimsIdentity.UserIdClaimType = AbpClaimTypes.UserId;

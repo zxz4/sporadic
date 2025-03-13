@@ -10,17 +10,11 @@ using Volo.Abp.Localization;
 
 namespace Sporadic.Abp.Identity
 {
-    public class SporadicIdentityResultException : BusinessException, ILocalizeErrorMessage
+    public class SporadicIdentityResultException([NotNull] IdentityResult identityResult) : BusinessException(
+            code: $"Sporadic.Abp.Identity:{identityResult.Errors.First().Code}",
+            message: identityResult.Errors.Select(err => err.Description).JoinAsString(", ")), ILocalizeErrorMessage
     {
-        public IdentityResult IdentityResult { get; }
-
-        public SporadicIdentityResultException([NotNull] IdentityResult identityResult)
-            : base(
-                code: $"Sporadic.Abp.Identity:{identityResult.Errors.First().Code}",
-                message: identityResult.Errors.Select(err => err.Description).JoinAsString(", "))
-        {
-            IdentityResult = Check.NotNull(identityResult, nameof(identityResult));
-        }
+        public IdentityResult IdentityResult { get; } = Check.NotNull(identityResult, nameof(identityResult));
 
         public virtual string LocalizeMessage(LocalizationContext context)
         {

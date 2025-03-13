@@ -9,12 +9,12 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public static class SporadicIdentityServiceCollectionExtensions
     {
-        public static IdentityBuilder AddAbpIdentity(this IServiceCollection services)
+        public static IdentityBuilder AddSporadicIdentity(this IServiceCollection services)
         {
-            return services.AddAbpIdentity(setupAction: null);
+            return services.AddSporadicIdentity(setupAction: null);
         }
 
-        public static IdentityBuilder AddAbpIdentity(this IServiceCollection services, Action<IdentityOptions> setupAction)
+        public static IdentityBuilder AddSporadicIdentity(this IServiceCollection services, Action<IdentityOptions> setupAction)
         {
             //AbpRoleManager
             services.TryAddScoped<IdentityRoleManager>();

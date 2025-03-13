@@ -11,16 +11,10 @@ using Volo.Abp.Data;
 namespace Sporadic.Abp.Identity.Roles
 {
     [Authorize(IdentityPermissions.Roles.Default)]
-    public class IdentityRoleAppService : IdentityAppServiceBase, IIdentityRoleAppService
+    public class IdentityRoleAppService(IdentityRoleManager roleManager, IIdentityRoleRepository roleRepository) : IdentityAppServiceBase, IIdentityRoleAppService
     {
-        public IdentityRoleAppService(IdentityRoleManager roleManager, IIdentityRoleRepository roleRepository)
-        {
-            RoleManager = roleManager;
-            RoleRepository = roleRepository;
-        }
-
-        protected IdentityRoleManager RoleManager { get; }
-        protected IIdentityRoleRepository RoleRepository { get; }
+        protected IdentityRoleManager RoleManager { get; } = roleManager;
+        protected IIdentityRoleRepository RoleRepository { get; } = roleRepository;
 
         public virtual async Task<IdentityRoleDto> CreateAsync(IdentityRoleCreateDto input)
         {

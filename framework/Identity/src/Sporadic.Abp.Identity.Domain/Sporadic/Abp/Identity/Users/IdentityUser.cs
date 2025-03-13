@@ -13,35 +13,77 @@ namespace Sporadic.Abp.Identity.Users
 {
     public class IdentityUser : BasicAggregateRoot<Guid>, IUser, IHasConcurrencyStamp
     {
+        /// <summary>
+        /// 昵称
+        /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// 是否启用
+        /// </summary>
         public bool IsActive { get; set; }
 
+        /// <summary>
+        /// 邮箱
+        /// </summary>
         public string Email { get; protected internal set; }
 
+        /// <summary>
+        /// 标识是否已确认邮箱
+        /// </summary>
         public bool EmailConfirmed { get; protected internal set; }
 
+        /// <summary>
+        /// 手机号码
+        /// </summary>
         public string PhoneNumber { get; protected internal set; }
 
+        /// <summary>
+        /// 标识是否已确认电话号码
+        /// </summary>
         public bool PhoneNumberConfirmed { get; protected internal set; }
 
+        /// <summary>
+        /// 用户名
+        /// </summary>
         public string UserName { get; protected internal set; }
 
+        /// <summary>
+        /// 密码哈希
+        /// </summary>
         [DisableAuditing]
         public virtual string PasswordHash { get; protected internal set; }
 
         /// <summary>
         /// 指示用户是否应该在下次登录时更改密码
         /// </summary>
-        public virtual bool ShouldChangePasswordOnNextLogin { get; protected internal set; }
+        public virtual bool ShouldChangePasswordOnNextLogin { get; set; }
 
 
+        /// <summary>
+        /// 安全戳
+        /// </summary>
         public string SecurityStamp { get; internal set; }
 
         /// <summary>
         /// 标记是否是外部用户
         /// </summary>
         public bool IsExternal { get; set; }
+
+        /// <summary>
+        /// 锁定结束时间
+        /// </summary>
+        public virtual DateTimeOffset? LockoutEnd { get; protected internal set; }
+
+        /// <summary>
+        /// 是否启用账户锁定
+        /// </summary>
+        public virtual bool LockoutEnabled { get; protected internal set; }
+
+        /// <summary>
+        /// 尝试失败次数
+        /// </summary>
+        public virtual int AccessFailedCount { get; protected internal set; }
 
 
         public virtual ICollection<IdentityUserLogin> Logins { get; protected set; }

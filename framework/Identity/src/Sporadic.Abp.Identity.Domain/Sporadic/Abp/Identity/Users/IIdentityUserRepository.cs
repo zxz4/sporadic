@@ -37,7 +37,13 @@ namespace Sporadic.Abp.Identity.Users
             bool includeDetails = false,
             CancellationToken cancellationToken = default);
 
-
+        /// <summary>
+        /// 通过外部登录关联信息获取用户
+        /// </summary>
+        /// <param name="loginProvider"></param>
+        /// <param name="providerKey"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         Task<IdentityUser> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken);
       
         /// <summary>

@@ -24,14 +24,14 @@ namespace Sporadic.Abp.Identity
             AbpDynamicClaimCacheItem dynamicClaims;
             try
             {
-                dynamicClaims = await dynamicClaimsCache.GetAsync(userId.Value, identity.FindTenantId());
+                dynamicClaims = await dynamicClaimsCache.GetAsync(userId.Value);
             }
             catch (EntityNotFoundException e)
             {
-                // In case if user not found, We force to clear the claims principal.
+                //如果用户不存在，清空用户身份信息
                 context.ClaimsPrincipal = new ClaimsPrincipal(new ClaimsIdentity());
                 var logger = context.GetRequiredService<ILogger<IdentityDynamicClaimsPrincipalContributor>>();
-                logger.LogWarning(e, $"User not found: {userId.Value}");
+                logger.LogWarning(e, "User not found: {Value}", userId.Value);
                 return;
             }
 

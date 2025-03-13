@@ -34,6 +34,12 @@ namespace Sporadic.Abp.Identity
                 b.Property(u => u.IsExternal).IsRequired().HasDefaultValue(true)
                     .HasColumnName(nameof(IdentityUser.IsExternal));
 
+                b.Property(u=>u.LockoutEnd).HasColumnName(nameof(IdentityUser.LockoutEnd));
+
+                b.Property(u => u.LockoutEnabled).IsRequired().HasDefaultValue(false).HasColumnName(nameof(IdentityUser.LockoutEnabled));
+
+                b.Property(u => u.AccessFailedCount).IsRequired().HasDefaultValue(0).HasColumnName(nameof(IdentityUser.AccessFailedCount));
+
                 b.HasMany(u => u.Logins).WithOne().HasForeignKey(ul => ul.UserId).IsRequired();
                 b.HasMany(u => u.Roles).WithOne().HasForeignKey(ur => ur.UserId).IsRequired();
                 b.HasMany(u => u.OrganizationUnits).WithOne().HasForeignKey(ur => ur.UserId).IsRequired();

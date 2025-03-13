@@ -10,22 +10,15 @@ using Volo.Abp.Domain.Entities;
 namespace Sporadic.Abp.Identity.OrganizationUnits
 {
     [Authorize(IdentityPermissions.OrganizationUnits.Default)]
-    public class OrganizationUnitAppService : IdentityAppServiceBase, IOrganizationUnitAppService
+    public class OrganizationUnitAppService(
+        IIdentityUserRepository userRepository,
+        IOrganizationUnitRepository organizationUnitRepository,
+        OrganizationUnitManager organizationUnitManager) : IdentityAppServiceBase, IOrganizationUnitAppService
     {
-        public OrganizationUnitAppService(
-            IIdentityUserRepository userRepository,
-            IOrganizationUnitRepository organizationUnitRepository,
-            OrganizationUnitManager organizationUnitManager)
-        {
-            UserRepository = userRepository;
-            OrganizationUnitRepository = organizationUnitRepository;
-            OrganizationUnitManager = organizationUnitManager;
-        }
+        protected IIdentityUserRepository UserRepository { get; } = userRepository;
+        protected IOrganizationUnitRepository OrganizationUnitRepository { get; } = organizationUnitRepository;
 
-        protected IIdentityUserRepository UserRepository { get; }
-        protected IOrganizationUnitRepository OrganizationUnitRepository { get; }
-
-        protected OrganizationUnitManager OrganizationUnitManager { get; }
+        protected OrganizationUnitManager OrganizationUnitManager { get; } = organizationUnitManager;
 
         public async Task<OrganizationUnitDto> CreateAsync(CreateOrganizationUnitInput input)
         {

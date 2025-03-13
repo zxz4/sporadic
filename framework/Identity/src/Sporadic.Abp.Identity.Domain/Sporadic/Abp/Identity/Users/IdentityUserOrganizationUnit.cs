@@ -6,12 +6,12 @@ namespace Sporadic.Abp.Identity.Users
     public class IdentityUserOrganizationUnit : Entity
     {
         /// <summary>
-        /// UserId
+        /// 用户标识 <see cref="IdentityUser"/>.
         /// </summary>
         public virtual Guid UserId { get; protected set; }
 
         /// <summary>
-        /// <see cref="OrganizationUnits.OrganizationUnit"/>.
+        /// 机构标识 <see cref="OrganizationUnits.OrganizationUnit"/>.
         /// </summary>
         public virtual Guid OrganizationUnitId { get; protected set; }
 

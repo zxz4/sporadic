@@ -20,10 +20,7 @@ namespace Sporadic.Abp.Identity.Users
 
         public virtual async Task<IdentityResult> ValidateAsync(UserManager<IdentityUser> manager, IdentityUser user)
         {
-            var describer = new IdentityErrorDescriber();
-
             var errors = new List<IdentityError>();
-
 
             var userName = await manager.GetUserNameAsync(user);
 
@@ -78,7 +75,7 @@ namespace Sporadic.Abp.Identity.Users
                 }
             }
 
-            return errors.Count > 0 ? IdentityResult.Failed(errors.ToArray()) : IdentityResult.Success;
+            return errors.Count > 0 ? IdentityResult.Failed([.. errors]) : IdentityResult.Success;
         }
     }
 }

@@ -18,7 +18,6 @@ namespace Sporadic.Abp.Identity
             {
                 options.AddRepository<IdentityUser, EfCoreIdentityUserRepository>();
                 options.AddRepository<IdentityRole, EfCoreIdentityRoleRepository>();
-                //options.AddRepository<IdentityClaimType, EfCoreIdentityClaimTypeRepository>();
                 options.AddRepository<OrganizationUnit, EfCoreOrganizationUnitRepository>();
             });
         }

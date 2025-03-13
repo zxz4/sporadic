@@ -5,6 +5,10 @@ using Volo.Abp.Settings;
 
 namespace Sporadic.Abp.Identity
 {
+    /// <summary>
+    /// 动态配置提供程序
+    /// https://abp.io/docs/latest/Modules/Setting-Management
+    /// </summary>
     public class SporadicIdentitySettingDefinitionProvider : SettingDefinitionProvider
     {
         public override void Define(ISettingDefinitionContext context)

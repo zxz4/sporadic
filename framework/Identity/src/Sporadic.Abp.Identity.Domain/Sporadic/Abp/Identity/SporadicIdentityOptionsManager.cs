@@ -8,16 +8,14 @@ using Volo.Abp.Settings;
 
 namespace Sporadic.Abp.Identity
 {
-    public class SporadicIdentityOptionsManager : AbpDynamicOptionsManager<IdentityOptions>
+    /// <summary>
+    /// 动态配置IdentityOptions 
+    /// https://abp.io/docs/latest/Modules/Setting-Management
+    /// </summary>
+    public class SporadicIdentityOptionsManager(IOptionsFactory<IdentityOptions> factory,
+        ISettingProvider settingProvider) : AbpDynamicOptionsManager<IdentityOptions>(factory)
     {
-        protected ISettingProvider SettingProvider { get; }
-
-        public SporadicIdentityOptionsManager(IOptionsFactory<IdentityOptions> factory,
-            ISettingProvider settingProvider)
-            : base(factory)
-        {
-            SettingProvider = settingProvider;
-        }
+        protected ISettingProvider SettingProvider { get; } = settingProvider;
 
         protected override async Task OverrideOptionsAsync(string name, IdentityOptions options)
         {

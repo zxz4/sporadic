@@ -13,27 +13,18 @@ using Volo.Abp.Data;
 namespace Sporadic.Abp.Identity.Users
 {
     [Authorize(IdentityPermissions.Users.Default)]
-    public class IdentityUserAppService : IdentityAppServiceBase, IIdentityUserAppService
+    public class IdentityUserAppService(
+        IdentityUserManager userManager,
+        IIdentityUserRepository userRepository,
+        IIdentityRoleRepository roleRepository,
+        IOptions<IdentityOptions> identityOptions,
+        IPermissionChecker permissionChecker) : IdentityAppServiceBase, IIdentityUserAppService
     {
-        protected IdentityUserManager UserManager { get; }
-        protected IIdentityUserRepository UserRepository { get; }
-        protected IIdentityRoleRepository RoleRepository { get; }
-        protected IOptions<IdentityOptions> IdentityOptions { get; }
-        protected IPermissionChecker PermissionChecker { get; }
-        public IdentityUserAppService(
-            IdentityUserManager userManager,
-            IIdentityUserRepository userRepository,
-            IIdentityRoleRepository roleRepository,
-            IOptions<IdentityOptions> identityOptions,
-            IPermissionChecker permissionChecker)
-        {
-            UserManager = userManager;
-            UserRepository = userRepository;
-            RoleRepository = roleRepository;
-            IdentityOptions = identityOptions;
-            PermissionChecker = permissionChecker;
-        }
-
+        protected IdentityUserManager UserManager { get; } = userManager;
+        protected IIdentityUserRepository UserRepository { get; } = userRepository;
+        protected IIdentityRoleRepository RoleRepository { get; } = roleRepository;
+        protected IOptions<IdentityOptions> IdentityOptions { get; } = identityOptions;
+        protected IPermissionChecker PermissionChecker { get; } = permissionChecker;
 
         public virtual async Task<IdentityUserDto> GetAsync(Guid id)
         {
@@ -85,7 +76,8 @@ namespace Sporadic.Abp.Identity.Users
             {
                 IsActive = input.IsActive,
                 IsExternal = input.IsExternal,
-                Name = input.Name
+                Name = input.Name,
+                ShouldChangePasswordOnNextLogin = input.ShouldChangePasswordOnNextLogin,
             };
 
             (await UserManager.CreateAsync(user, input.Password)).CheckErrors();
@@ -117,6 +109,10 @@ namespace Sporadic.Abp.Identity.Users
             user.Name = input.Name;
 
             user.IsExternal = input.IsExternal;
+
+            user.IsActive = input.IsActive;
+
+            user.ShouldChangePasswordOnNextLogin = input.ShouldChangePasswordOnNextLogin;
 
             user.SetConcurrencyStampIfNotNull(input.ConcurrencyStamp);
 

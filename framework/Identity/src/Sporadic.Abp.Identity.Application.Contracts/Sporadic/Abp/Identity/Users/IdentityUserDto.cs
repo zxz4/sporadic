@@ -16,16 +16,44 @@ namespace Sporadic.Abp.Identity.Users
         /// </summary>
         public string Name { get; set; }
 
+        /// <summary>
+        /// 是否启用
+        /// </summary>
         public bool IsActive { get; set; }
 
+        /// <summary>
+        /// 是否外部用户
+        /// </summary>
+        public bool IsExternal { get; set; }
+
+        /// <summary>
+        /// 邮箱
+        /// </summary>
         public string Email { get; set; }
 
+        /// <summary>
+        /// 邮箱是否已确认
+        /// </summary>
         public bool EmailConfirmed { get; set; }
 
+        /// <summary>
+        /// 手机号码
+        /// </summary>
         public string PhoneNumber { get; set; }
 
+        /// <summary>
+        /// 手机号码是否已确认
+        /// </summary>
         public bool PhoneNumberConfirmed { get; set; }
 
+        /// <summary>
+        /// 强制下次登录时更改密码
+        /// </summary>
+        public bool ShouldChangePasswordOnNextLogin { get; set; }
+
+        /// <summary>
+        /// ConcurrencyStamp
+        /// </summary>
         public string ConcurrencyStamp { get; set; }
     }
 }
