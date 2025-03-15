@@ -2,18 +2,22 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Sporadic.Abp.Identity.Roles;
+using Sporadic.Abp.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
 
 namespace Sporadic.Abp.Identity.Users
 {
     public class IdentityUserManager(
         IIdentityUserRepository identityUserRepository,
+        IIdentityRoleRepository identityRoleRepository,
         IdentityUserStore store,
         IOptions<IdentityOptions> optionsAccessor,
         IPasswordHasher<IdentityUser> passwordHasher,
@@ -38,6 +42,8 @@ namespace Sporadic.Abp.Identity.Users
 
         protected IIdentityUserRepository IdentityUserRepository { get; } = identityUserRepository;
 
+        protected IIdentityRoleRepository IdentityRoleRepository { get; } = identityRoleRepository;
+
         public virtual async Task<IdentityResult> CreateAsync(IdentityUser user, string password, bool validatePassword)
         {
             var result = await UpdatePasswordHash(user, password, validatePassword);
@@ -49,6 +55,64 @@ namespace Sporadic.Abp.Identity.Users
             return await CreateAsync(user);
         }
 
+
+        /// <summary>
+        /// 生成重置密码短信验证码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="phoneNumber"></param>
+        /// <returns></returns>
+        public virtual Task<string> GeneratePasswordResetTokenAsync(IdentityUser user, string phoneNumber)
+        {
+            ThrowIfDisposed();
+
+            Check.NotNull(user, nameof(user));
+            Check.NotNull(phoneNumber, nameof(phoneNumber));
+
+            return GenerateUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, ResetPasswordTokenPurpose);
+        }
+
+        /// <summary>
+        /// 通过短信验证码重置密码
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="token"></param>
+        /// <param name="newPassword"></param>
+        /// <returns></returns>
+        public virtual async Task<IdentityResult> ResetPasswordBySmsCodeAsync(IdentityUser user, string token, string newPassword)
+        {
+            ThrowIfDisposed();
+            Check.NotNull(user, nameof(user));
+            Check.NotNull(token, nameof(token));
+            Check.NotNull(newPassword, nameof(newPassword));    
+
+            // Make sure the token is valid and the stamp matches
+            if (!await VerifyUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, ResetPasswordTokenPurpose, token).ConfigureAwait(false))
+            {
+                return IdentityResult.Failed(ErrorDescriber.InvalidToken());
+            }
+            IdentityResult result;
+
+            if (await HasPasswordAsync(user))
+            {
+                result = await UpdatePasswordHash(user, newPassword, validatePassword: true).ConfigureAwait(false);
+            }
+            else
+            {
+                result = await AddPasswordAsync(user, newPassword).ConfigureAwait(false);
+            }
+            if (!result.Succeeded)
+            {
+                return result;
+            }
+
+            if (!user.PhoneNumberConfirmed)
+            {
+                await ((IdentityUserStore)Store).SetPhoneNumberConfirmedAsync(user, true, CancellationToken).ConfigureAwait(false);
+            }
+
+            return await UpdateUserAsync(user).ConfigureAwait(false);
+        }
 
         /// <summary>
         /// 确认手机号码
@@ -90,7 +154,7 @@ namespace Sporadic.Abp.Identity.Users
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
-        public virtual async Task<string> GeneratePhoneSignInTokenAsync(IdentityUser user)
+        public virtual async Task<string> GeneratePhoneNumberSignInCodeAsync(IdentityUser user)
         {
             ThrowIfDisposed();
 
@@ -171,6 +235,26 @@ namespace Sporadic.Abp.Identity.Users
             }
 
             return IdentityResult.Success;
+        }
+
+        /// <summary>
+        /// 为用户添加默认角色
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public virtual async Task<IdentityResult> AddDefaultRolesAsync([NotNull] IdentityUser user)
+        {
+            await IdentityUserRepository.EnsureCollectionLoadedAsync(user, u => u.Roles, CancellationToken);
+
+            foreach (var role in await IdentityRoleRepository.GetDefaultOnesAsync(cancellationToken: CancellationToken))
+            {
+                if (!user.IsInRole(role.Id))
+                {
+                    user.AddRole(role.Id);
+                }
+            }
+
+            return await UpdateUserAsync(user);
         }
     }
 }

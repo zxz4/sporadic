@@ -137,7 +137,6 @@ namespace Sporadic.Abp.Identity.Users
         }
 
 
-
         public virtual async Task<ListResultDto<IdentityRoleDto>> GetRolesAsync(Guid id)
         {
             var roles = await UserRepository.GetRolesAsync(id);
@@ -171,14 +170,18 @@ namespace Sporadic.Abp.Identity.Users
             );
         }
 
-
         public virtual async Task<IdentityUserDto> FindByEmailAsync(string email)
         {
             return ObjectMapper.Map<IdentityUser, IdentityUserDto>(
                 await UserManager.FindByEmailAsync(email)
             );
         }
-
+        public virtual async Task<IdentityUserDto> FindByPhoneNumberAsync(string phoneNumber)
+        {
+            return ObjectMapper.Map<IdentityUser, IdentityUserDto>(
+               await UserRepository.FindByPhoneNumberAsync(phoneNumber)
+           );
+        }
         protected virtual async Task UpdateUserByInput(IdentityUser user, IdentityUserCreateOrUpdateDtoBase input)
         {
             if (!string.Equals(user.Email, input.Email, StringComparison.InvariantCultureIgnoreCase))
@@ -208,13 +211,6 @@ namespace Sporadic.Abp.Identity.Users
             {
                 (await UserManager.SetRolesAsync(user, input.RoleNames)).CheckErrors();
             }
-        }
-
-        public virtual async Task<IdentityUserDto> FindByPhoneNumberAsync(string phoneNumber)
-        {
-            return ObjectMapper.Map<IdentityUser, IdentityUserDto>(
-               await UserRepository.FindByPhoneNumberAsync(phoneNumber)
-           );
         }
     }
 

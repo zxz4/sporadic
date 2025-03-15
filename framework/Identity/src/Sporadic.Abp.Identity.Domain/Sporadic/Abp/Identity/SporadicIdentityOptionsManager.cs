@@ -12,7 +12,8 @@ namespace Sporadic.Abp.Identity
     /// 动态配置IdentityOptions 
     /// https://abp.io/docs/latest/Modules/Setting-Management
     /// </summary>
-    public class SporadicIdentityOptionsManager(IOptionsFactory<IdentityOptions> factory,
+    public class SporadicIdentityOptionsManager(
+        IOptionsFactory<IdentityOptions> factory,
         ISettingProvider settingProvider) : AbpDynamicOptionsManager<IdentityOptions>(factory)
     {
         protected ISettingProvider SettingProvider { get; } = settingProvider;

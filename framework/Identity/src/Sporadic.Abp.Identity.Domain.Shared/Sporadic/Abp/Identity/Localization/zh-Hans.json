@@ -7,8 +7,10 @@
     "Permission:UserManagement": "用户管理",
     "Permission:OrganizationUnitManagement": "机构管理",
 
-    "Sporadic.Abp.Identity:010005": "禁止更改静态角色。",
-    "Sporadic.Abp.Identity:010006": "禁止删除静态角色。",
+    "Sporadic.Abp.Identity:010001": "禁止更改静态角色。",
+    "Sporadic.Abp.Identity:010002": "禁止删除静态角色。",
+
+    "Sporadic.Abp.Identity:010010": "无法更改外部登录用户密码!",
 
     "Sporadic.Abp.Identity:DefaultError": "发生了一个未知错误。",
     "Sporadic.Abp.Identity:ConcurrencyFailure": "你正在处理的对象已被其他用户修改。请放弃你的更改，刷新然后重试。",
